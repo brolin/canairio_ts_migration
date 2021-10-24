@@ -1,0 +1,27 @@
+diff --git a/docker-compose.yml b/docker-compose.yml
+index d4abc98..70c2aae 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -1,5 +1,5 @@
+ influxdb:
+-  image: influxdb:latest
++  image: influxdb:1.8
+   container_name: influxdb
+   ports:
+     - "8083:8083"
+@@ -11,7 +11,8 @@ influxdb:
+   volumes:
+     # Data persistency
+     # sudo mkdir -p /srv/docker/influxdb/data
+-    - /srv/docker/influxdb/data:/var/lib/influxdb
++    - ./influxdb/data:/var/lib/influxdb
++    - ./backup:/backup
+ 
+ telegraf:
+   image: telegraf:latest
+@@ -34,4 +35,4 @@ grafana:
+   volumes:
+     # Data persistency
+     # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
+-    - /srv/docker/grafana/data:/var/lib/grafana
++    - ./grafana/data:/var/lib/grafana
