@@ -1,27 +1,104 @@
 diff --git a/docker-compose.yml b/docker-compose.yml
-index d4abc98..70c2aae 100644
+index d4abc98..da6d2ad 100644
 --- a/docker-compose.yml
 +++ b/docker-compose.yml
-@@ -1,5 +1,5 @@
- influxdb:
+@@ -1,37 +1,40 @@
+-influxdb:
 -  image: influxdb:latest
-+  image: influxdb:1.8
-   container_name: influxdb
-   ports:
-     - "8083:8083"
-@@ -11,7 +11,8 @@ influxdb:
-   volumes:
-     # Data persistency
-     # sudo mkdir -p /srv/docker/influxdb/data
+-  container_name: influxdb
+-  ports:
+-    - "8083:8083"
+-    - "8086:8086"
+-    - "8090:8090"
+-    - "2003:2003"
+-  env_file:
+-    - 'env.influxdb'
+-  volumes:
+-    # Data persistency
+-    # sudo mkdir -p /srv/docker/influxdb/data
 -    - /srv/docker/influxdb/data:/var/lib/influxdb
-+    - ./influxdb/data:/var/lib/influxdb
-+    - ./backup:/backup
++version: "1"
++services:
++ influxdb:
++   image: influxdb:1.8
++   container_name: influxdb
++   ports:
++     - "8083:8083"
++     - "8086:8086"
++     - "8090:8090"
++     - "2003:2003"
++   env_file:
++     - 'env.influxdb'
++   volumes:
++     # Data persistency
++     # sudo mkdir -p /srv/docker/influxdb/data
++     - ./influxdb/data:/var/lib/influxdb
++     - ./backp:/backup
  
- telegraf:
-   image: telegraf:latest
-@@ -34,4 +35,4 @@ grafana:
-   volumes:
-     # Data persistency
-     # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
+-telegraf:
+-  image: telegraf:latest
+-  container_name: telegraf
+-  links:
+-    - influxdb
+-  volumes:
+-    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
++ telegraf:
++   image: telegraf:latest
++   container_name: telegraf
++   links:
++     - influxdb
++   volumes:
++     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+ 
+-grafana:
+-  image: grafana/grafana:latest
+-  container_name: grafana
+-  ports:
+-    - "3000:3000"
+-  env_file:
+-    - 'env.grafana'
+-  user: "0"
+-  links:
+-    - influxdb
+-  volumes:
+-    # Data persistency
+-    # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
 -    - /srv/docker/grafana/data:/var/lib/grafana
-+    - ./grafana/data:/var/lib/grafana
++ grafana:
++   image: grafana/grafana:latest
++   container_name: grafana
++   ports:
++     - "3000:3000"
++   env_file:
++     - 'env.grafana'
++   user: "0"
++   links:
++     - influxdb
++   volumes:
++     # Data persistency
++     # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
++     - ./grafana/data:/var/lib/grafana
+diff --git a/run.sh b/run.sh
+index 48432cd..a72d325 100755
+--- a/run.sh
++++ b/run.sh
+@@ -1,15 +1,12 @@
+ #!/bin/bash
+ 
+-sudo mkdir -p /srv/docker/grafana/data
+-docker-compose up -d
+-sudo chown -R 472:472 /srv/docker/grafana/data
++sudo mkdir -p ./grafana/data
++sudo mkdir -p ./influxdb/data
++sudo mkdir ./backup
++docker-compose up
+ 
+ echo "Grafana: http://127.0.0.1:3000 - admin/admin"
+ 
+ echo
+ echo "Current database list"
+ curl -G http://localhost:8086/query?pretty=true --data-urlencode "db=glances" --data-urlencode "q=SHOW DATABASES"
+-
+-echo
+-echo "Create a new database ?"
+-echo "curl -XPOST 'http://localhost:8086/query' --data-urlencode 'q=CREATE DATABASE mydb'"
