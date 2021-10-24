@@ -88,9 +88,9 @@ index 48432cd..a72d325 100755
 -sudo mkdir -p /srv/docker/grafana/data
 -docker-compose up -d
 -sudo chown -R 472:472 /srv/docker/grafana/data
-+sudo mkdir -p ./grafana/data
-+sudo mkdir -p ./influxdb/data
-+sudo mkdir ./backup
++mkdir -p ./grafana/data
++mkdir -p ./influxdb/data
++mkdir ./backup
 +docker-compose up
  
  echo "Grafana: http://127.0.0.1:3000 - admin/admin"
