@@ -33,7 +33,7 @@ index d4abc98..da6d2ad 100644
 +     # Data persistency
 +     # sudo mkdir -p /srv/docker/influxdb/data
 +     - ./influxdb/data:/var/lib/influxdb
-+     - ./backp:/backup
++     - ./backup:/backup
  
 -telegraf:
 -  image: telegraf:latest
