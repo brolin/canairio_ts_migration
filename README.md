@@ -24,13 +24,10 @@ password: admin
 
 You need at least 8Gb available to restore the canairio sensors backup
 
-> sudo chown -R $USER:$USER backup
-
-> cd dev_infrastructure/backup
-
-> wget -c  http://influxdb.canair.io:8080/data/canairio-snap-fixed-stations-20210721.tar.bz2 ## 2,0G file
-
 ```
+sudo chown -R $USER:$USER backup
+cd dev_infrastructure/backup
+wget -c  http://influxdb.canair.io:8080/data/canairio-snap-fixed-stations-20210721.tar.bz2 ## 2,0G file
 tar jxvf canairio-snap-fixed-stations-20210721.tar.bz2
 rm canairio-snap-fixed-stations-20210721.tar.bz2 ## Free disc space
 cd ..
