@@ -30,15 +30,14 @@ You need at least 8Gb available to restore the canairio sensors backup
 
 > wget -c  http://influxdb.canair.io:8080/data/canairio-snap-fixed-stations-20210721.tar.bz2 ## 2,0G file
 
-> tar jxvf canairio-snap-fixed-stations-20210721.tar.bz2
+```
+tar jxvf canairio-snap-fixed-stations-20210721.tar.bz2
+rm canairio-snap-fixed-stations-20210721.tar.bz2 ## Free disc space
+cd ..
+docker exec -it influxdb influxd restore --portable -db canairio /backup/canairio-snap-localhost-20210721/
+rm -rf /backup/canairio-snap-localhost-20210721/ ## Free disc space
 
-> rm canairio-snap-fixed-stations-20210721.tar.bz2 ## Free disc space
-
-> cd ..
-
-> docker exec -it influxdb influxd restore --portable -db canairio /backup/canairio-snap-localhost-20210721/
-
-> rm -rf /backup/canairio-snap-localhost-20210721/ ## Free disc space
+```
 
 ## Influxdb as datasource for Grafana
 
