@@ -2,7 +2,7 @@
 
 This repository seek reproduce a test enviroment to work with the data of the https://canair.io/ - Citizen network for monitoring air pollulants.
 
-You need **docker-compose** working in your machine and at least 8Gb available to restore the database
+You need [docker-compose](https://docs.docker.com/compose/) working in your machine and at least 8Gb available to restore the database 
 
 After clone the repository ..
 
