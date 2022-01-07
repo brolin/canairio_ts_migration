@@ -12,7 +12,7 @@ and then ``chmod +x setup.sh``
 
 Run ``./setup.sh`` this command download the influxdb + grafana docker-compose files and patch they to the versions actually used by the canair.io project.
 
-Go to the folder **dev_infrastructure/** and run the command ``docker-compose up``
+Go to the folder ``cd dev_infrastructure`` and run the command ``docker-compose up``
 
 ## Grafana default admin user
 In the browser go to **http://localhost:3000**
@@ -26,13 +26,19 @@ You need at least 8Gb available to restore the canairio sensors backup
 
 <code>
 sudo chown -R $USER:$USER backup
+
 cd dev_infrastructure/backup
-wget -c  http://influxdb.canair.io:8080/data/canairio-snap-fixed-stations-20210721.tar.bz2
-# 2,0G file
+
+wget -c  http://influxdb.canair.io:8080/data/canairio-snap-fixed-stations-20210721.tar.bz2 ## 2,0G file
+
 tar jxvf canairio-snap-fixed-stations-20210721.tar.bz2
+
 rm canairio-snap-fixed-stations-20210721.tar.bz2 ## Free disc space
+
 cd ..
+
 docker exec -it influxdb influxd restore --portable -db canairio /backup/canairio-snap-localhost-20210721/
+
 rm -rf /backup/canairio-snap-localhost-20210721/ ## Free disc space
 </code>
 
